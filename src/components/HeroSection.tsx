@@ -76,7 +76,7 @@ export default function HeroSection({ scrollTo }: HeroSectionProps) {
         </p>
 
         <h1 className="hero-title font-sans text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-foreground leading-tight mb-6">
-          {data?.fullname ?? "Ariana"}
+          {data?.fullname ?? "Dayang Ariana Binti Mohd Rizal"}
         </h1>
 
         <div className="hero-divider w-16 h-[1px] bg-accent mx-auto mb-8" />
@@ -88,7 +88,7 @@ export default function HeroSection({ scrollTo }: HeroSectionProps) {
 
         <div className="hero-buttons mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
-            onClick={() => scrollTo("Projects")}
+            onClick={() => scrollTo("Experience")}
             className="px-8 py-3 bg-foreground text-background text-xs tracking-[0.2em] uppercase font-body hover:bg-accent hover:text-foreground transition-all duration-300"
           >
             View Work

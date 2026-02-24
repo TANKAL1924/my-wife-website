@@ -1,7 +1,8 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { Menu, X } from "lucide-react";
-import { NAV_ITEMS } from "../data/resume-data";
+
+const NAV_ITEMS = ["About", "Experience", "Skills", "Studies", "Language", "References", "Contact"];
 
 interface NavBarProps {
   scrolled: boolean;

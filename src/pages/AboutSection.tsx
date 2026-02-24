@@ -18,7 +18,7 @@ export default function AboutSection() {
   useGSAP(() => {
     const heading = headingRef.current;
     const para = paraRef.current;
-    if (!heading || !para) return;
+    if (!heading || !para || !data) return;
 
     // Split heading by words
     const splitHeading = new SplitText(heading, { type: "words" });
@@ -38,17 +38,14 @@ export default function AboutSection() {
       },
     });
 
-    // Split paragraph by lines with morph
-    const splitPara = new SplitText(para, { type: "lines" });
-
-    gsap.from(splitPara.lines, {
-      opacity: 0,
-      y: 24,
-      skewY: 1,
-      duration: 0.55,
-      stagger: 0.07,
-      ease: "power3.out",
-      clearProps: "skewY",
+    // Split paragraph by words + chars, animate chars staggered up
+    const splitPara = new SplitText(para, { type: "words,chars" });
+    gsap.from(splitPara.chars, {
+      duration: 0.6,
+      y: 100,
+      autoAlpha: 0,
+      stagger: 0.012,
+      ease: "power4.out",
       scrollTrigger: {
         trigger: para,
         start: "top 90%",
@@ -56,10 +53,10 @@ export default function AboutSection() {
       },
     });
 
-  }, []);
+  }, { dependencies: [data] });
 
   return (
-    <section id="about" className="py-28 px-6">
+    <section id="about" className="py-20 px-6">
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
         <div>
           <FadeIn>
@@ -78,9 +75,15 @@ export default function AboutSection() {
           <FadeIn delay={0.1}>
             <div className="w-10 h-[1px] bg-accent mb-8" />
           </FadeIn>
-          <p ref={paraRef} className="font-body text-muted-foreground leading-relaxed font-light">
-            {data?.work_profile ?? "I am a sport management professional dedicated to the business, culture, and community surrounding sport."}
-          </p>
+          {data ? (
+            <p ref={paraRef} className="font-body text-muted-foreground leading-relaxed font-light">
+              {data.work_profile}
+            </p>
+          ) : (
+            <p className="font-body text-muted-foreground leading-relaxed font-light opacity-0 select-none">
+              &nbsp;
+            </p>
+          )}
         </div>
 
         <FadeIn delay={0.2}>

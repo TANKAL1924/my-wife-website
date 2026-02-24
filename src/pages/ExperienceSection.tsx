@@ -57,7 +57,7 @@ export default function ExperienceSection() {
   const cards = experiences.length > 0 ? [...experiences, ...experiences] : [];
 
   return (
-    <section id="experience" className="py-28 bg-secondary/40 overflow-hidden">
+    <section id="experience" className="py-20 bg-secondary/40 overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
         <FadeIn>
           <p className="text-xs tracking-[0.3em] uppercase font-body text-accent mb-4">
@@ -70,9 +70,13 @@ export default function ExperienceSection() {
         >
           Career Journey
         </h2>
+        <FadeIn delay={0.1}>
+          <div className="w-10 h-[1px] bg-accent mb-8" />
+        </FadeIn>
       </div>
 
       {/* Slider */}
+      <FadeIn delay={0.2}>
       <div className="overflow-hidden">
         <div ref={trackRef} className="flex gap-6 w-max pl-6">
           {cards.map((exp, i) => (
@@ -111,6 +115,7 @@ export default function ExperienceSection() {
           ))}
         </div>
       </div>
+      </FadeIn>
     </section>
   );
 }

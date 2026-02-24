@@ -4,7 +4,9 @@ import HeroSection from "./components/HeroSection";
 import AboutSection from "./pages/AboutSection";
 import ExperienceSection from "./pages/ExperienceSection";
 import SkillsSection from "./pages/SkillsSection";
-import ProjectsSection from "./pages/ProjectsSection";
+import StudiesSection from "./pages/StudiesSection";
+import LanguageSection from "./pages/LanguageSection";
+import ReferencesSection from "./pages/ReferencesSection";
 import ContactSection from "./pages/ContactSection";
 import FooterSection from "./pages/FooterSection";
 
@@ -36,7 +38,9 @@ function App() {
       <AboutSection />
       <ExperienceSection />
       <SkillsSection />
-      <ProjectsSection />
+      <StudiesSection />
+      <LanguageSection />
+      <ReferencesSection />
       <ContactSection />
       <FooterSection />
     </div>
