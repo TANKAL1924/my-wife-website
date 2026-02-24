@@ -1,5 +1,9 @@
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface SkillBarProps {
   label: string;
@@ -7,8 +11,22 @@ interface SkillBarProps {
 }
 
 export default function SkillBar({ label, level }: SkillBarProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
+  const ref = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.from(barRef.current, {
+      width: 0,
+      duration: 1.2,
+      ease: "power4.out",
+      scrollTrigger: {
+        trigger: ref.current,
+        start: "top 90%",
+        once: true,
+      },
+    });
+  }, { scope: ref, dependencies: [level] });
+
   return (
     <div ref={ref} className="mb-6">
       <div className="flex justify-between mb-2">
@@ -16,11 +34,10 @@ export default function SkillBar({ label, level }: SkillBarProps) {
         <span className="text-sm font-body text-accent">{level}%</span>
       </div>
       <div className="h-[1.5px] w-full bg-border relative overflow-hidden">
-        <motion.div
+        <div
+          ref={barRef}
           className="absolute top-0 left-0 h-full bg-accent"
-          initial={{ width: 0 }}
-          animate={isInView ? { width: `${level}%` } : {}}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          style={{ width: `${level}%` }}
         />
       </div>
     </div>

@@ -1,4 +1,5 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useEffect } from "react";
+import gsap from "gsap";
 import { Menu, X } from "lucide-react";
 import { NAV_ITEMS } from "../data/resume-data";
 
@@ -10,6 +11,28 @@ interface NavBarProps {
 }
 
 export default function NavBar({ scrolled, menuOpen, setMenuOpen, scrollTo }: NavBarProps) {
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const menu = mobileMenuRef.current;
+    if (!menu) return;
+    if (menuOpen) {
+      gsap.fromTo(
+        menu,
+        { height: 0, opacity: 0 },
+        { height: "auto", opacity: 1, duration: 0.35, ease: "power2.out", display: "block" }
+      );
+    } else {
+      gsap.to(menu, {
+        height: 0,
+        opacity: 0,
+        duration: 0.25,
+        ease: "power2.in",
+        onComplete: () => { gsap.set(menu, { display: "none" }); },
+      });
+    }
+  }, [menuOpen]);
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -46,28 +69,24 @@ export default function NavBar({ scrolled, menuOpen, setMenuOpen, scrollTo }: Na
         </button>
       </div>
 
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background border-t border-border overflow-hidden"
-          >
-            <div className="flex flex-col px-6 py-4 gap-4">
-              {NAV_ITEMS.map((item) => (
-                <button
-                  key={item}
-                  onClick={() => scrollTo(item)}
-                  className="text-left text-sm tracking-[0.14em] uppercase font-body text-foreground py-1"
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile menu */}
+      <div
+        ref={mobileMenuRef}
+        className="md:hidden bg-background border-t border-border overflow-hidden"
+        style={{ display: "none", height: 0 }}
+      >
+        <div className="flex flex-col px-6 py-4 gap-4">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item}
+              onClick={() => scrollTo(item)}
+              className="text-left text-sm tracking-[0.14em] uppercase font-body text-foreground py-1"
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      </div>
     </header>
   );
 }

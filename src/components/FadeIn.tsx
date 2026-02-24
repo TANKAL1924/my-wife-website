@@ -1,5 +1,9 @@
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface FadeInProps {
   children: React.ReactNode;
@@ -8,17 +12,29 @@ interface FadeInProps {
 }
 
 export default function FadeIn({ children, delay = 0, className = "" }: FadeInProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const ref = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.from(ref.current, {
+      opacity: 0,
+      y: 40,
+      scale: 0.94,
+      skewY: 1.5,
+      duration: 0.9,
+      delay,
+      ease: "power4.out",
+      clearProps: "skewY,scale",
+      scrollTrigger: {
+        trigger: ref.current,
+        start: "top 90%",
+        toggleActions: "play none none reverse",
+      },
+    });
+  }, { scope: ref, dependencies: [delay] });
+
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 28 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
-    >
+    <div ref={ref} className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 }
